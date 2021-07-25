@@ -1,0 +1,53 @@
+package ${parentPack}.mapper;
+
+import ${parentPack}.model.auto.${tableInfo.javaTableName};
+import ${parentPack}.model.auto.${tableInfo.javaTableName}Criteria;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * ${tableInfo.tableComment} ${tableInfo.javaTableName}Mapper
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Mapper
+public interface ${tableInfo.javaTableName}Mapper {
+   #set( $pklag = false)
+   #set( $pk_javaType = '')
+   #foreach ($column in $beanColumns)
+	   #if(${column.column_key} == 'PRI')
+	   	#set( $pklag = true )
+	   	#set( $pk_javaType=$column.javaType)
+	   #end
+   #end
+
+    long countByCriteria(${tableInfo.javaTableName}Criteria example);
+
+    int deleteByCriteria(${tableInfo.javaTableName}Criteria example);
+	#if(${pklag} == true)
+	
+    int deleteByPrimaryKey(${pk_javaType} id);
+	#end
+	
+    int insert(${tableInfo.javaTableName} record);
+
+    int insertSelective(${tableInfo.javaTableName} record);
+
+    List<${tableInfo.javaTableName}> selectByCriteria(${tableInfo.javaTableName}Criteria example);
+	#if(${pklag} == true)
+	
+    ${tableInfo.javaTableName} selectByPrimaryKey(${pk_javaType} id);
+	#end
+	
+    int updateByCriteriaSelective(@Param("record") ${tableInfo.javaTableName} record, @Param("example") ${tableInfo.javaTableName}Criteria example);
+
+    int updateByCriteria(@Param("record") ${tableInfo.javaTableName} record, @Param("example") ${tableInfo.javaTableName}Criteria example);
+	#if(${pklag} == true)
+	
+    int updateByPrimaryKeySelective(${tableInfo.javaTableName} record);
+
+    int updateByPrimaryKey(${tableInfo.javaTableName} record);
+  	#end
+  	
+}

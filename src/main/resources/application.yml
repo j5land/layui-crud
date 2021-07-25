@@ -1,0 +1,48 @@
+#tomcat config
+server :
+  port : 8080
+  ##项目名字配置
+  #servlet :
+  #  context-path : /demo
+  tomcat :
+    uri-encoding : UTF-8
+    threads:
+      max: 128
+      min-spare: 5
+
+spring :
+  # 环境 dev|test|prod
+  profiles :
+    active : dev
+    #引入其他配置文件，例如ftpHX 未配置文件application-ftpHX.yml
+    #include: ftpHX,ftpCloud
+  servlet:
+    max-connections: 200000
+    max-http-post-size: 9000000
+  mvc:   #静态文件
+    static-path-pattern : /static/**
+  #模板引擎
+  thymeleaf:
+    model: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+    #指定编码
+    encoding: utf-8
+    #禁用缓存 默认false
+    cache: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#pagehelper分页插件
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+

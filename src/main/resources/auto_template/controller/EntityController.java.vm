@@ -1,0 +1,115 @@
+package ${parentPack}.controller;
+
+import ${parentPack}.model.response.AjaxResult;
+import ${parentPack}.model.response.ResultPage;
+import ${parentPack}.model.request.TableParams;
+import ${parentPack}.model.auto.${tableInfo.javaTableName};
+import ${parentPack}.service.${tableInfo.javaTableName}Service;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * ${tableInfo.tableComment}Controller
+ * @ClassName: ${tableInfo.javaTableName}Controller
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Controller
+@RequestMapping("/${tableInfo.javaTableName_a}")
+public class ${tableInfo.javaTableName}Controller {
+
+    private String prefix = "/${tableInfo.javaTableName_a}";
+
+	@Autowired
+	private ${tableInfo.javaTableName}Service ${tableInfo.javaTableName_a}Service;
+
+	/**
+	 * ${tableInfo.tableComment}页面展示
+	 * @param model
+	 * @return String
+	 * @author ${author}
+	 */
+	@GetMapping("/view")
+    public String view(ModelMap model) {
+        return prefix + "/list";
+    }
+
+	/**
+	 * list集合
+	 * @param tablepar
+	 * @param searchText
+	 * @return
+	 */
+	@GetMapping("/list")
+	@ResponseBody
+	public ResultPage list(TableParams tablepar,${tableInfo.javaTableName} ${tableInfo.javaTableName_a}){
+		PageInfo<${tableInfo.javaTableName}> page=${tableInfo.javaTableName_a}Service.list(tablepar,${tableInfo.javaTableName_a}) ; 
+		return ResultPage.page(page.getList(),page.getTotal());
+	}
+	
+	/**
+     * 新增跳转
+     */
+    @GetMapping("/add")
+    public String add(ModelMap modelMap) {
+        return prefix + "/add";
+    }
+
+
+    /**
+     * 新增保存
+     * @param 
+     * @return
+     */
+	@PostMapping("/add")
+	@ResponseBody
+	public AjaxResult add(${tableInfo.javaTableName} ${tableInfo.javaTableName_a}){
+		int b=${tableInfo.javaTableName_a}Service.insertSelective(${tableInfo.javaTableName_a});
+		if(b>0){
+			return AjaxResult.success();
+		}else{
+			return AjaxResult.error();
+		}
+	}
+	
+	/**
+	 * ${tableInfo.tableComment}删除
+	 * @param ids
+	 * @return
+	 */
+	@DeleteMapping("/remove")
+	@ResponseBody
+	public AjaxResult remove(String ids){
+		int b=${tableInfo.javaTableName_a}Service.deleteByPrimaryKey(ids);
+		if(b>0){
+			return AjaxResult.success();
+		}else{
+			return AjaxResult.error();
+		}
+	}
+
+	/**
+	 * 修改跳转
+	 * @param id
+	 * @param mmap
+	 * @return
+	 */
+	@GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") String id, ModelMap map) {
+        map.put("${tableInfo.javaTableName}", ${tableInfo.javaTableName_a}Service.selectByPrimaryKey(id));
+        return prefix + "/edit";
+    }
+	
+	/**
+     * 修改保存
+     */
+    @PostMapping("/edit")
+    @ResponseBody
+    public AjaxResult editSave(${tableInfo.javaTableName} ${tableInfo.javaTableName_a}) {
+        return AjaxResult.toAjax(${tableInfo.javaTableName_a}Service.updateByPrimaryKeySelective(${tableInfo.javaTableName_a}));
+    }
+
+}
